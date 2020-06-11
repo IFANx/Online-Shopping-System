@@ -1,0 +1,207 @@
+<!doctype html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css"/>
+    <script src="/jquery/dist/jquery.js"></script>
+    <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="/bootstrap-table/bootstrap-table.js"
+            th:src="@{/bootstrap-table/bootstrap-table.js}"></script>
+    <script src="/bootstrap-table/locale/bootstrap-table-zh-CN.js"
+            th:src="@{/bootstrap-table/locale/bootstrap-table-zh-CN.js}"></script>
+
+
+    <script src="/layer/layer.js"
+            th:src="@{/layer/layer.js}"></script>
+    <title>login列表</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">login列表</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header" >
+                            <div id="toolbar">
+                                <button class="btn btn-danger remove-batch" >批量删除</button>
+
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="table1" class="table table-bordered table-hover">
+
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+
+
+                </div>
+                </section>
+                <!-- /.content -->
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+
+<script>
+    $(function () {
+
+        window.operateEvents  = {
+            // 更改操作的方法
+            'click .btn_update': function (e, value, row, index) {
+                alert('更改');
+            },
+            //删除 单行/
+            'click .btn_del': function (e, value, row, index) {
+                var id = row.id;
+                layer.confirm("确认删除: "+row.name+ "  ?", {icon: 3, title:'删除操作'}, function(index){
+                    //do something
+                    $.ajax({
+                        type: "delete",
+                        url: "/deleteBook",
+                        contentType:"application/json",
+                        data:JSON.stringify({"id":id }),
+                        success: function(msg){
+                            if(msg["success"]){
+                                $('#table1').bootstrapTable('remove', {
+                                    field: 'id',
+                                    values: [id]
+                                });
+                                layer.msg("操作成功",{time:700});
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        };
+
+        $('#table1').bootstrapTable('destroy').bootstrapTable({
+            method: 'get',
+            url: "/getbooks",
+            striped: true,
+            dataField: "list",
+            totalField: "total",
+            pageNumber: 1,
+            pageSize: 10,
+            pagination: true,
+            queryParamsType: 'limit',
+            // search: true,
+            queryParams: function (params) {
+                return {
+                    pageSize: params.limit,
+                    pageNo: params.offset / params.limit + 1
+                }
+            },
+            sidePagination: 'server',
+            pageList: "[10, 25, 50, 100, all]",
+            showRefresh: true,
+            clickToSelect: true,
+            toolbarAlign: 'left',
+            buttonsAlign: 'right',
+            toolbar: '#toolbar',
+            showColumns: false,
+            paginationLoop: false,
+            columns: [
+                {
+                    title: 'ID',
+                    field: 'id',
+                    visible: false,
+                    width: 160
+                },
+                {
+                    //  title: '全选/反选',
+                    checkbox: true
+                }
+                ,
+                {
+                    title: '书名',
+                    field: 'name',
+                    visible: true,
+                    width: 160
+                },
+                {
+                    title: '价格',
+                    field: 'price',
+                    width: 160,
+                    align: 'center'
+                },
+                {
+                    title: '作者',
+                    field: 'author',
+                    width: 160,
+                    align: 'left'
+                },
+                {
+                    title: '操作',
+                    width: 80,
+                    align: 'center',
+                    formatter:function (value, row, index) {
+                        return [
+                            '<button  type="button" class="btn btn-danger btn-xs btn_del">',
+                            '删除' ,
+                            '</button>',
+                            ' <button  type="button" class="btn btn-primary btn-xs btn_update">',
+                            '更改' ,
+                            '</button>',
+                        ].join('')
+                    },
+                    events:window.operateEvents
+                }
+            ],
+            locale: 'zh-CN',
+            responseHandler: function (data) {
+                return data['data'];
+            }
+
+        });
+
+
+        $(".remove-batch").click(function () {
+            var rows =  $('#table1').bootstrapTable('getSelections');
+            var ids= $.map(rows,function (row) {
+                return row.id;
+            });
+
+            if(ids.length>0){
+                layer.confirm("确认删除", {icon: 3, title:'删除操作'}, function(index){
+                    //do something
+                    $.ajax({
+                        type: "delete",
+                        url: "/deleteBooks",
+                        contentType:"application/json",
+                        data:JSON.stringify(ids),
+                        success: function(msg){
+                            if(msg["success"]){
+                                $('#table1').bootstrapTable('refresh');
+                                layer.msg("批量操作成功",{time:700});
+                                /*   $('#table1').bootstrapTable('remove', {
+                                     field: 'id',
+                                     values: ids
+                                   });*/
+
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+            }else {
+                layer.msg("未选中行",{time:700});
+            }
+
+        });
+    })
+</script>

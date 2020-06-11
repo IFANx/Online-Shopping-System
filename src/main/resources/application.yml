@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/springboot_demo1?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: 13458482147
+
+
+
+  # 设置全局日期格式,如果设置这个格式,则代码中@DateTimeFormat(pattern = "dd/MM/yyyy") 无效!!
+  mvc:
+    format:
+      date: yyyy-MM-dd
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+
+
+
+# Mybatis 配置
+mybatis:
+  type-aliases-package: com.kkxu.demo.common.domain
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+
+
+logging:
+  level:
+    com.demo.springboot.helloworld.mapper: debug
+

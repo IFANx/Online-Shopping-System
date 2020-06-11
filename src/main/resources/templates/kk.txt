@@ -1,0 +1,41 @@
+alter table buyer add constraint FK_Relationship_2 foreign key (account_id)
+      references login (account_id) on delete cascade on update cascade;
+
+alter table comment add constraint FK_comment foreign key (buyer_id)
+      references buyer (id) on delete cascade on update cascade;
+
+alter table comment add constraint FK_comment2 foreign key (goods_id)
+      references goods (id) on delete cascade on update cascade;
+
+alter table goods add constraint FK_warehouse foreign key (seller_id)
+      references seller (id) on delete cascade on update cascade;
+
+alter table login add constraint FK_Relationship_1 foreign key (id)
+      references buyer (id) on delete cascade on update cascade;
+
+alter table login add constraint FK_Relationship_3 foreign key (seller_id)
+      references seller (id) on delete cascade on update cascade;
+
+alter table orders add constraint FK_Relationship_6 foreign key (goods_id)
+      references goods (id) on delete cascade on update cascade;
+
+alter table orders add constraint FK_Relationship_7 foreign key (buyer_id)
+      references buyer (id) on delete cascade on update cascade;
+
+alter table orders add constraint FK_Relationship_8 foreign key (seller_id)
+      references seller (id) on delete cascade on update cascade;
+
+alter table seller add constraint FK_Relationship_4 foreign key (account_id)
+      references login (account_id) on delete cascade on update cascade;
+
+alter table shopping_cart add constraint FK_shopping_cart foreign key (buyer_id)
+      references buyer (id) on delete cascade on update cascade;
+
+alter table shopping_cart add constraint FK_shopping_cart2 foreign key (goods_id)
+      references goods (id) on delete cascade on update cascade;
+
+alter table shopping_cart2 add constraint FK_shopping_cart3 foreign key (seller_id)
+      references seller (id) on delete cascade on update cascade;
+
+alter table shopping_cart2 add constraint FK_shopping_cart4 foreign key (goods_id)
+      references goods (id) on delete cascade on update cascade;

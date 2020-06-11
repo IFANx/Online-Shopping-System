@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>login详细数据</h1>
+[[${login.getAccountId()}]]
+[[${login.getPassword()}]]
+[[${login.getIsseller()}]]
+[[${login.getId()}]]
+[[${login.getSellerId()}]]
+
+
+<p>请输入更新的数据</p>
+<form action="/updatelogin">
+    <input type="text" name="account_id" value="account_id">
+    <input type="text" name="Id" value="Id">
+    <input type="text" name="Password" value="Password">
+    <input type="text" name="Isseller" value="Isseller">
+    <input type="text" name="SellerId" value="SellerId">
+    <input type="submit" value="更新">
+</form>
+</body>
+</html>
