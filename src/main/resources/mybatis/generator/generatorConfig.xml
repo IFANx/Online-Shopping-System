@@ -41,9 +41,9 @@
 <!--        <table tableName="orders" domainObjectName="Orders"/>-->
 <!--        <table tableName="login" domainObjectName="Login"/>-->
 <!--        <table tableName="seller" domainObjectName="Seller"/>-->
-        <table tableName="goods" domainObjectName="Goods"/>
-        <table tableName="comment" domainObjectName="Comment"/>
-        <table tableName="shopping_cart" domainObjectName="Shopping_cart"/>
+            <table tableName="goods" domainObjectName="Goods"/>
+<!--        <table tableName="comment" domainObjectName="Comment"/>-->
+<!--        <table tableName="shopping_cart" domainObjectName="Shopping_cart"/>-->
 <!--        <table tableName="shopping_cart2" domainObjectName="Shopping_cart2"/>-->
 
 

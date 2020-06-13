@@ -1,26 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <h1>login详细数据</h1>
-[[${login.getAccountId()}]]
-[[${login.getPassword()}]]
-[[${login.getIsseller()}]]
-[[${login.getId()}]]
-[[${login.getSellerId()}]]
+用户自定义ID:[[${login.AccountId}]]<br>
+password:[[${login.Password}]]<br>
+是否是卖家(0不是/1是):[[${login.Isseller}]]<br>
+系统分配ID:[[${login.Id}]]<br>
+卖家ID(前提是卖家，不是为空):[[${login.SellerId}]]
 
 
-<p>请输入更新的数据</p>
-<form action="/updatelogin">
-    <input type="text" name="account_id" value="account_id">
-    <input type="text" name="Id" value="Id">
-    <input type="text" name="Password" value="Password">
-    <input type="text" name="Isseller" value="Isseller">
-    <input type="text" name="SellerId" value="SellerId">
+============
+<!--/*@thymesVar id="buyer" type="ch"*/-->
+<span th:if="${buyer} != null">
+    <p>buyer</p>
+    系统分配ID:[[${buyer.id}]]<br>
+    用户自定义ID：[[${buyer.accountId}]]<br>
+    名称：[[${buyer.name}]]<br>
+    密码：[[${login.Password}]]<br>
+    性别(0/1)：[[${buyer.sex}]]<br>
+    邮箱：[[${buyer.email}]]<br>
+    个人签名：[[${buyer.personalsign}]]
+
+    <p>请输入更新的数据</p>
+<form action="/updateBuyer">
+    名称：<input type="text" name="name"><br>
+    密码：<input type="text" name="password">
+    性别：<input type="text" name="sex"><br>
+    邮箱：<input type="text" name="email"><br>
+    个性签名：<input type="text" name="personalsign"><br>
     <input type="submit" value="更新">
 </form>
+</span>
+
+<!--/*@thymesVar id="seller" type="ch"*/-->
+<span th:if="${seller} != null">
+    <p>seller</p>
+    系统分配ID：[[${seller.id}]]<br>
+    用户自定义ID：[[${seller.accountId}]]<br>
+    名称：[[${seller.sellerName}]]<br>
+    密码：[[${login.Password}]]<br>
+    性别：[[${seller.sex}]]<br>
+    邮箱：[[${seller.email}]]<br>
+    店铺名称：[[${seller.storeName}]]<br>
+    店铺信息：[[${seller.storeInfo}]]
+
+
+        <p>请输入更新的数据</p>
+<form action="/updateSeller">
+    名称：<input type="text" name="sellername"><br>
+    密码：<input type="text" name="password">
+    性别：<input type="text" name="sex"><br>
+    邮箱：<input type="text" name="email"><br>
+    店铺名称：<input type="text" name="storename"><br>
+    店铺信息：<input type="text" name="storeinfo"><br>
+    <input type="submit" value="更新">
+</form>
+</span>
+
+
 </body>
 </html>

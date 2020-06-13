@@ -1,7 +1,5 @@
 package com.kkxu.demo.common.domain;
 
-import java.math.BigDecimal;
-
 public class Goods {
     private Integer id;
 
@@ -11,7 +9,7 @@ public class Goods {
 
     private String info;
 
-    private BigDecimal price;
+    private Double price;
 
     private Integer soldCount;
 
@@ -49,11 +47,11 @@ public class Goods {
         this.info = info == null ? null : info.trim();
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

@@ -240,4 +240,32 @@
       store_info = #{storeInfo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+<!--  手动添加的-->
+  <update id="updateById" parameterType="com.kkxu.demo.common.domain.Seller">
+    update seller
+    <set>
+      <if test="seller.id != null">
+        id = #{seller.id,jdbcType=INTEGER}
+      </if>
+      <if test="seller.sex != null">
+        sex = #{seller.sex,jdbcType=BIT},
+      </if>
+      <if test="seller.email != null">
+        email = #{seller.email,jdbcType=VARCHAR},
+      </if>
+      <if test="seller.sellerName != null">
+        seller_name = #{seller.sellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="seller.storeName != null">
+        store_name = #{seller.storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="seller.storeInfo != null">
+        store_info = #{seller.storeInfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where seller.account_id = #{account_id,jdbcType=VARCHAR};
+  </update>
+
 </mapper>

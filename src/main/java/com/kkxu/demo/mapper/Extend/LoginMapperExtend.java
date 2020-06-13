@@ -11,4 +11,6 @@ public interface LoginMapperExtend {
     List<Login> selectAll();
 
     Integer updateById(String account_id, Login login);
+
+    Integer selectMaxID();
 }

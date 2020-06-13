@@ -3,9 +3,13 @@ package com.kkxu.demo.mapper;
 import com.kkxu.demo.common.domain.Goods;
 import com.kkxu.demo.common.domain.GoodsExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
-public interface GoodsMapper {
+import com.kkxu.demo.mapper.Extend.GoodsMapperExtend;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface GoodsMapper extends GoodsMapperExtend {
     long countByExample(GoodsExample example);
 
     int deleteByExample(GoodsExample example);

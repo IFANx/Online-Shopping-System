@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkxu.demo.mapper.LoginMapper">
+   <resultMap id="loginMap" type="com.kkxu.demo.common.domain.Login" extends="BaseResultMap">
+   </resultMap>
+    <!--  自己输入的-->
+    <!-- 不是生成的代码 -->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        delete from login where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectAll" parameterType="com.kkxu.demo.common.domain.Login">
+    select * from login;
+  </select>
+
+    <update id="updateById" parameterType="com.kkxu.demo.common.domain.Login">
+        update login
+        <set>
+            <if test="login.id != null">
+                id = #{login.id,jdbcType=INTEGER},
+            </if>
+            <if test="login.sellerId != null">
+                seller_id = #{login.sellerId,jdbcType=INTEGER},
+            </if>
+            <if test="login.password != null">
+                password = #{login.password,jdbcType=VARCHAR},
+            </if>
+            <if test="login.isseller != null">
+                isseller = #{login.isseller,jdbcType=BIT},
+            </if>
+        </set>
+        where login.account_id=#{account_id};
+    </update>
+
+    <select id="selectMaxID" parameterType="java.lang.Integer">
+        select MAX(id) from login;
+    </select>
+
+</mapper>

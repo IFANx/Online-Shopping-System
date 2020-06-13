@@ -243,4 +243,8 @@ update login
   where login.account_id=#{account_id};
 </update>
 
+  <select id="selectMaxID" resultType="java.lang.Integer">
+        select MAX(id) AS id from login;
+    </select>
+
 </mapper>

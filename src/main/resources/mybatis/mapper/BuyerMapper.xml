@@ -225,4 +225,30 @@
       personalsign = #{personalsign,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+<!--  手动添加的信息-->
+  <update id="updateById" parameterType="com.kkxu.demo.common.domain.Buyer">
+    update buyer
+    <set>
+      <if test="buyer.Id != null">
+        id  = #{buyer.id,jdbcType=INTEGER},
+      </if>
+      <if test="buyer.name != null">
+        name = #{buyer.name,jdbcType=VARCHAR},
+      </if>
+      <if test="buyer.sex != null">
+        sex = #{buyer.sex,jdbcType=BIT},
+      </if>
+      <if test="buyer.email != null">
+        email = #{buyer.email,jdbcType=VARCHAR},
+      </if>
+      <if test="buyer.personalsign != null">
+        personalsign = #{buyer.personalsign,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where buyer.account_id = #{account_id,jdbcType=VARCHAR};
+
+  </update>
+
 </mapper>

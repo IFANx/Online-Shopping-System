@@ -6,7 +6,7 @@
     <result column="seller_id" jdbcType="INTEGER" property="sellerId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="info" jdbcType="VARCHAR" property="info" />
-    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
     <result column="sold_count" jdbcType="INTEGER" property="soldCount" />
     <result column="rest_count" jdbcType="INTEGER" property="restCount" />
   </resultMap>
@@ -106,7 +106,7 @@
       info, price, sold_count, 
       rest_count)
     values (#{id,jdbcType=INTEGER}, #{sellerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{info,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{soldCount,jdbcType=INTEGER}, 
+      #{info,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, #{soldCount,jdbcType=INTEGER}, 
       #{restCount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.kkxu.demo.common.domain.Goods">
@@ -148,7 +148,7 @@
         #{info,jdbcType=VARCHAR},
       </if>
       <if test="price != null">
-        #{price,jdbcType=DECIMAL},
+        #{price,jdbcType=DOUBLE},
       </if>
       <if test="soldCount != null">
         #{soldCount,jdbcType=INTEGER},
@@ -180,7 +180,7 @@
         info = #{record.info,jdbcType=VARCHAR},
       </if>
       <if test="record.price != null">
-        price = #{record.price,jdbcType=DECIMAL},
+        price = #{record.price,jdbcType=DOUBLE},
       </if>
       <if test="record.soldCount != null">
         sold_count = #{record.soldCount,jdbcType=INTEGER},
@@ -199,7 +199,7 @@
       seller_id = #{record.sellerId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       info = #{record.info,jdbcType=VARCHAR},
-      price = #{record.price,jdbcType=DECIMAL},
+      price = #{record.price,jdbcType=DOUBLE},
       sold_count = #{record.soldCount,jdbcType=INTEGER},
       rest_count = #{record.restCount,jdbcType=INTEGER}
     <if test="_parameter != null">
@@ -219,7 +219,7 @@
         info = #{info,jdbcType=VARCHAR},
       </if>
       <if test="price != null">
-        price = #{price,jdbcType=DECIMAL},
+        price = #{price,jdbcType=DOUBLE},
       </if>
       <if test="soldCount != null">
         sold_count = #{soldCount,jdbcType=INTEGER},
@@ -235,9 +235,37 @@
     set seller_id = #{sellerId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       info = #{info,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DOUBLE},
       sold_count = #{soldCount,jdbcType=INTEGER},
       rest_count = #{restCount,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+<!--  2020.06.12-->
+<!--  非自带代码-->
+  <update id="updateById" parameterType="com.kkxu.demo.common.domain.Goods">
+    update goods
+    <set>
+<!--      <if test="goods.sellerId != null">-->
+<!--        seller_id = #{goods.sellerId,jdbcType=INTEGER},-->
+<!--      </if>-->
+      <if test="goods.name != null">
+        name = #{goods.name,jdbcType=VARCHAR},
+      </if>
+      <if test="goods.info != null">
+        info = #{goods.info,jdbcType=VARCHAR},
+      </if>
+      <if test="goods.price != null">
+        price = #{goods.price,jdbcType=DOUBLE},
+      </if>
+<!--      <if test="goods.soldCount != null">-->
+<!--        sold_count = #{goods.soldCount,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="goods.restCount != null">-->
+<!--        rest_count = #{goods.restCount,jdbcType=INTEGER},-->
+<!--      </if>-->
+    </set>
+    where id=#{goods.id};
   </update>
 </mapper>
