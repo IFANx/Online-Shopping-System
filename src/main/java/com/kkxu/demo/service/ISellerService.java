@@ -10,4 +10,6 @@ public interface ISellerService {
     Integer insert(Seller seller);
 
     List<Goods> selectbysellerid(Integer sellerid);
+
+    List<Seller> selectbystorename(String storename);
 }

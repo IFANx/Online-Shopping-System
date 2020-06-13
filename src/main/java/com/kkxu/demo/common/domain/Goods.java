@@ -70,4 +70,8 @@ public class Goods {
     public void setRestCount(Integer restCount) {
         this.restCount = restCount;
     }
+
+    public int compareTo(Goods goods) {
+        return goods.getSoldCount().compareTo(this.getSoldCount());
+    }
 }

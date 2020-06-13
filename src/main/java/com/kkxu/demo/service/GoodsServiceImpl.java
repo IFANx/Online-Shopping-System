@@ -70,4 +70,18 @@ public class GoodsServiceImpl implements IGoodsService {
         Goods goods = goodsMapper.selectByPrimaryKey(id);
         return goods;
     }
+
+    @Override
+    public List<Goods> selectBySellerId(Integer id) {
+        GoodsExample goodsExample=new GoodsExample();
+        goodsExample.createCriteria().andSellerIdEqualTo(id);
+        List<Goods> goods = goodsMapper.selectByExample(goodsExample);
+        return goods;
+    }
+
+    @Override
+    public Integer selectGoodsMaxID() {
+        Integer maxID = goodsMapper.selectMaxID();
+        return maxID;
+    }
 }

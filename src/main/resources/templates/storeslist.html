@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>商铺名称</th>
+        <th>商铺基本信息</th>
+        <th>商家</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="s:${sellers}">
+        <td th:text="${s.getStoreName()}"></td>
+        <td th:text="${s.getStoreInfo()}"></td>
+        <td th:text="${s.getSellerName()}"></td>
+        <form action="/store_goodslist" >
+            <input type="submit" value="查看该商铺拥有商品">
+        </form>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.kkxu.demo.service;
 import com.kkxu.demo.common.domain.Goods;
 import com.kkxu.demo.common.domain.GoodsExample;
 import com.kkxu.demo.common.domain.Seller;
+import com.kkxu.demo.common.domain.SellerExample;
 import com.kkxu.demo.mapper.GoodsMapper;
 import com.kkxu.demo.mapper.SellerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,13 @@ public class SellerServiceImpl implements ISellerService {
         goodsExample.createCriteria().andSellerIdEqualTo(sellerid);
         List<Goods> goods = goodsMapper.selectByExample(goodsExample);
         return goods;
+    }
+
+    @Override
+    public List<Seller> selectbystorename(String storename) {
+        SellerExample sellerExample =new SellerExample();
+        sellerExample.createCriteria().andStoreNameLike("%"+storename+"%");
+        List<Seller> sellers = sellerMapper.selectByExample(sellerExample);
+        return sellers;
     }
 }

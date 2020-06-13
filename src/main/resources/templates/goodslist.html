@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>卖家ID</th>
+        <th>名称</th>
+        <th>信息</th>
+        <th>价格</th>
+        <th>已售出</th>
+        <th>存量</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="s:${goods}">
+        <td th:text="${s.getSellerId()}"></td>
+        <td th:text="${s.getName()}"></td>
+        <td th:text="${s.getInfo()}"></td>
+        <td th:text="${s.getPrice()}"></td>
+        <td th:text="${s.getSoldCount()}"></td>
+        <td th:text="${s.getRestCount()}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
 
-    //1.login表注册 需要参数  ?account_id=kk1&password=ll&pwd=ll&isseller=0
+    //1.login表注册 需要参数  参数列表{account_id=?? &password=?? &pwd=?? &isseller=?}
     @RequestMapping("/register")
     @ResponseBody
     public String Register(String account_id, String password, String pwd, Integer isseller) {
@@ -70,7 +70,7 @@ public class UserController {
     }
 
 
-    //2.login登录,需要参数  ?account=scu44&pwd=scu44
+    //2.login登录,需要参数  参数列表{account=?? &pwd=??}
     @RequestMapping("/login")
     public String Login(String account, String pwd, HttpSession session, ModelMap modelMap) {
         Login login = iUserService.selectloginById(account);
@@ -112,14 +112,16 @@ public class UserController {
             if(seller!=null) {
                 modelMap.put("seller", seller);
             }
-            return "logindetail";
+            return "userdetails";
 
         } else
             modelMap.put("false1", "密码错误,登录失败");
         return "false.html";
     }
 
-    //3.User信息更新,包括更新login表和相应的buyer表，根据account_id修改其他信息，account_id,id，sellerid应不允许改变
+    //3.User信息更新,包括更新login表和相应的buyer表，根据account_id修改其他信息，
+    // account_id,id，sellerid应不允许改变
+    //参数列表{name=?? &password=?? &sex=? &email=?? &personalsign=??}
     @RequestMapping("/updateBuyer")
     @ResponseBody
     public String UpdateBuyer(HttpSession session, String name,String password,Boolean sex,String email,String personalsign) {
@@ -132,10 +134,12 @@ public class UserController {
         iUserService.UpdateLogin((String) session.getAttribute("account_id"), login);
         //相应对Buyer表进行修改
         iUserService.UpdateBuyer((String)session.getAttribute("account_id"),buyer);
-        return "success";
+        return "userdetails";
     }
 
-    //4.User信息更新,包括更新login表和相应的seller表，根据account_id修改其他信息，account_id,id，sellerid应不允许改变
+    //4.User信息更新,包括更新login表和相应的seller表，根据account_id修改其他信息，
+    // account_id,id，sellerid应不允许改变
+    //参数列表{sellername=?? &password=?? &sex=?? &email=?? &storename=?? &storeinfo=??}
     @RequestMapping("/updateSeller")
     @ResponseBody
     public String UpdateSeller(HttpSession session, String sellername,String password,boolean sex,String email,String storename,String storeinfo) {
@@ -146,10 +150,10 @@ public class UserController {
         seller.setSellerName(sellername);seller.setSex(sex);seller.setEmail(email);seller.setStoreName(storename);seller.setStoreInfo(storeinfo);
         iUserService.UpdateLogin((String) session.getAttribute("account_id"), login);
         iUserService.UpdateSeller((String)session.getAttribute("account_id"),seller);
-        return "success";
+        return "userdetails";
     }
 
-    //3.显示已注册login账号列表 --意义不大，因为没有管理员  参数列表  ?id1=4&id2=20
+    //5.显示已注册login账号列表 --意义不大，因为没有管理员  参数列表  ?id1=4&id2=20
     @RequestMapping("/loginlist")
     @ResponseBody
     public List<Login> loginlist(Integer id1, Integer id2) {
@@ -157,6 +161,22 @@ public class UserController {
         return list;
     }
 
+    //6.根据id删除login数据,更像是删除用户。不能删除seller，在某些情况下buyer，seller数据库还未删，当login中对应的password和acc都删除了，就没办法登陆了。
+    @RequestMapping("/deleteById")
+    @ResponseBody
+    public String deleteloginById(String account_id) {
+        String flag = iUserService.deleteById(account_id);
+        return flag;
+    }
+
+    //注销功能，消除session，跳转到登陆界面
+    @RequestMapping("/logout")
+    public String logout(HttpSession session){
+        session.removeAttribute("seller");
+        session.removeAttribute("buyer");
+        session.removeAttribute("account_id");
+        return "login";
+    }
 
 
 
@@ -183,24 +203,7 @@ public class UserController {
     }
 
 
-    //5.login详情(根据login表中对应的account_id，查询该login详细数据)
-    @RequestMapping("/Userdetails")
-    public String Userdetail(String account_id, ModelMap modelMap, HttpSession session) {
-        Login login = iUserService.selectloginById((account_id));
-        modelMap.put("login", login);
-        return "logindetail";
-    }
 
-
-
-
-    //6.根据id删除login数据
-    @RequestMapping("/deleteById")
-    @ResponseBody
-    public String deleteloginById(String account_id) {
-        String flag = iUserService.deleteById(account_id);
-        return flag;
-    }
 
 
     //根据ids删除login数据

@@ -20,4 +20,8 @@ public interface IGoodsService {
     Integer deleteByName(String name);
 
     Goods selectById(int id);
+
+    List<Goods> selectBySellerId(Integer id);
+
+    Integer selectGoodsMaxID();
 }

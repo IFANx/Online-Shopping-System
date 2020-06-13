@@ -1,13 +1,17 @@
 package com.kkxu.demo.controller;
 
 import com.kkxu.demo.common.domain.Goods;
+import com.kkxu.demo.common.domain.Seller;
 import com.kkxu.demo.service.IGoodsService;
+import com.kkxu.demo.service.ISellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -15,101 +19,67 @@ public class SearchController {
     @Autowired
     private IGoodsService iGoodsService;
 
-    @RequestMapping("/GoodsInsert")
-    @ResponseBody
-    //卖家添加商品，商品中的sellerid应该由登陆的seller提供，用session保存。
-    public String GoodsOperate(HttpSession session,Goods goods) {
-        for (int i = 0; i < 100; i++) {
-            goods.setId(i);
-            goods.setName("goods" + i);
-            goods.setPrice(Math.random() * 100);
-            goods.setInfo("good" + i + "info");
-            goods.setRestCount((int) (Math.random() * 1000));
-            goods.setSoldCount((int) (Math.random() * 1000));
-            goods.setSellerId(i);
-            iGoodsService.insert(goods);
-        }
-        return "ok";
+    @Autowired
+    private ISellerService iSellerService;
 
-//        这里是想添加一个商品，但商品的ID应不同
-
-//        Goods goods1 = iGoodsService.selectById(id);
-//        Goods goodsnew = new Goods();
-//        Integer num = iGoodsService.selectAll().size();
-//        if (goods1 != null) {
-//            return "此goodsid已有，请换一个";
-//        } else {
-//              goodsnew.setId(num+1);
-//              goodsnew.setInfo("dd");
-//              iGoodsService.insert(goodsnew);
-//
-//            return "success";
-//        }
-
-    }
-
-    //商品列表
-    @RequestMapping("/GoodsList")
-    @ResponseBody
-    public List<Goods> GoodsList() {
+    //1.商品列表,不需要输入任何信息，直接显示所有商品  参数列表{无参数}
+    @RequestMapping("/goodslist")
+    public String GoodsList(ModelMap modelMap) {
         List<Goods> goods = iGoodsService.listAll();
-        return goods;
+        modelMap.addAttribute("goods", goods);
+        return "goodslist";
     }
 
-    //根据名称模糊搜索商品
-    @RequestMapping("/GoodsSearch")
-    @ResponseBody
-    public List<Goods> GoodsSearch(String name) {
+
+    //2.根据名称模糊搜索商品  参数列表{name=??}
+    @RequestMapping("/searchgoodsbyname")
+    public String GoodsSearch(String name, ModelMap modelMap) {
         List<Goods> goods = iGoodsService.goodsSearch(name);
-        return goods;
+        modelMap.addAttribute("goods", goods);
+        return "goodslist";
     }
 
 
-    //根据名称和价格搜索商品
-    @RequestMapping("/GoodsSearchByName_Price")
-    @ResponseBody
-    public List<Goods> GoodsSearchByName_Price(String name, Double price) {
+    //3.根据名称和价格搜索商品  参数列表{name=?? &price=??}
+    @RequestMapping("/searchgoodsbyname_price")
+    public String GoodsSearchByName_Price(String name, Double price, ModelMap modelMap) {
         List<Goods> goods = iGoodsService.goodsSearchByName_Price(name, price);
         int size = goods.size();
         Goods temp = new Goods();
-        for (int i = 1; i < size; i++) {
-            for (int j = i; j < size - 1; j++) {
-                if (goods.get(j).getSoldCount() < goods.get(j + 1).getSoldCount())
-                    temp = goods.get(j);
-                goods.set(j, goods.get(j + 1));
-                goods.set(j + 1, temp);
-            }
-        }
-        return goods;
+        Collections.sort(goods, Goods::compareTo);
+        modelMap.addAttribute("goods", goods);
+        return "goodslist";
     }
 
 
-    //Goods信息更新
-    @RequestMapping("/GoodsUpdate")
-    @ResponseBody
-    public String GoodsUpdate(Integer id, String name, Double price, String info) {
-        Goods goods = new Goods();
-        goods.setId(id);
-        goods.setName(name);
-        goods.setPrice(price);
-        goods.setInfo(info);
-        iGoodsService.goodsupdate(id, goods);
-        return "success";
+    //4.根据名称搜索商铺  参数列表{name=??}
+    @RequestMapping("/searchstorebyname")
+    public String SearchStoreSyName(String storename, ModelMap modelMap,HttpSession session) {
+        List<Seller> sellers = iSellerService.selectbystorename(storename);
+        modelMap.addAttribute("sellers", sellers);
+        session.setAttribute("sellers",sellers);
+        return "storeslist";
     }
 
-    //根据id或者name删除goods数据
-    @RequestMapping("/deletegoods")
-    @ResponseBody
-    public String DeleteGoodsById(Integer id, String name) {
-        Integer flag = null;
-        if (id != null) {
-            flag= iGoodsService.deleteById(id);
-        }
-        else if (name != null) {
-            flag = iGoodsService.deleteByName(name);
-        }
-        return "success";
+
+
+    //5.商家查看自己商铺已有的商品或者买家选择一个商铺后，买家查看该商家商铺的所有商品
+    @RequestMapping("/store_goodslist")
+    public String StoreGoodsList(HttpSession session,ModelMap modelMap){
+        Seller seller= (Seller) session.getAttribute("seller");
+        List<Goods> goods=iGoodsService.selectBySellerId(seller.getId());
+        modelMap.addAttribute("goods",goods);
+        return  "goodslist";
     }
+
+
+
+
+//        这里是想添加一个商品，但商品的ID应不同
+
+
+
+
 
 
 }

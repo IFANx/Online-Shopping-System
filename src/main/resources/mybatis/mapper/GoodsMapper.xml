@@ -247,9 +247,9 @@
   <update id="updateById" parameterType="com.kkxu.demo.common.domain.Goods">
     update goods
     <set>
-<!--      <if test="goods.sellerId != null">-->
-<!--        seller_id = #{goods.sellerId,jdbcType=INTEGER},-->
-<!--      </if>-->
+      <if test="goods.sellerId != null">
+        seller_id = #{goods.sellerId,jdbcType=INTEGER},
+      </if>
       <if test="goods.name != null">
         name = #{goods.name,jdbcType=VARCHAR},
       </if>
@@ -259,13 +259,17 @@
       <if test="goods.price != null">
         price = #{goods.price,jdbcType=DOUBLE},
       </if>
-<!--      <if test="goods.soldCount != null">-->
-<!--        sold_count = #{goods.soldCount,jdbcType=INTEGER},-->
-<!--      </if>-->
-<!--      <if test="goods.restCount != null">-->
-<!--        rest_count = #{goods.restCount,jdbcType=INTEGER},-->
-<!--      </if>-->
+      <if test="goods.soldCount != null">
+        sold_count = #{goods.soldCount,jdbcType=INTEGER},
+      </if>
+      <if test="goods.restCount != null">
+        rest_count = #{goods.restCount,jdbcType=INTEGER},
+      </if>
     </set>
-    where id=#{goods.id};
+    where goods.id=#{goodsid};
   </update>
+
+  <select id="selectMaxID" resultType="java.lang.Integer">
+        select MAX(id)  AS id from goods;
+    </select>
 </mapper>
