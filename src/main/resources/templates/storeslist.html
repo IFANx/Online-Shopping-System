@@ -19,9 +19,12 @@
         <td th:text="${s.getStoreName()}"></td>
         <td th:text="${s.getStoreInfo()}"></td>
         <td th:text="${s.getSellerName()}"></td>
+        <td>
         <form action="/store_goodslist" >
+            <input th:value="${s.getId()}" name="id" type="hidden">
             <input type="submit" value="查看该商铺拥有商品">
         </form>
+        </td>
     </tr>
     </tbody>
 </table>

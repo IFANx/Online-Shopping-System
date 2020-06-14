@@ -39,4 +39,14 @@ public class SellerServiceImpl implements ISellerService {
         List<Seller> sellers = sellerMapper.selectByExample(sellerExample);
         return sellers;
     }
+
+    @Override
+    public Seller selectsellerbysellerid(Integer id) {
+        SellerExample sellerExample=new SellerExample();
+        sellerExample.createCriteria().andIdEqualTo(id);
+        List<Seller> sellers = sellerMapper.selectByExample(sellerExample);
+        Seller seller=null;
+        if(sellers!=null){seller=sellers.get(0);}
+        return seller;
+    }
 }

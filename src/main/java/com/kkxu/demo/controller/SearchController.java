@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +33,19 @@ public class SearchController {
     @RequestMapping("/searchgoodsbyname")
     public String GoodsSearch(String name, ModelMap modelMap) {
         List<Goods> goods = iGoodsService.goodsSearch(name);
+        Collections.sort(goods, Goods::compareTo);
+//        List<Integer> goodsid = null;
+//        for (int i = 0; i <goods.size() ; i++) {
+//            goodsid.add(i,goods.get(i).getId());
+//        }
+//        List<Integer> sellersid=null;
+//        List<String> sellername=null;
+//        for (int i = 0; i <goodsid.size(); i++) {
+//            sellersid.add(i,iGoodsService.selectById(goodsid.get(i)).getSellerId());
+//            sellername.add(i,iSellerService.selectbysellerid(sellersid.get(i)).get(i).getName());
+//        }
         modelMap.addAttribute("goods", goods);
+//        modelMap.addAttribute("sellername",sellername);
         return "goodslist";
     }
 
@@ -65,14 +75,20 @@ public class SearchController {
 
     //5.商家查看自己商铺已有的商品或者买家选择一个商铺后，买家查看该商家商铺的所有商品
     @RequestMapping("/store_goodslist")
-    public String StoreGoodsList(HttpSession session,ModelMap modelMap){
-        Seller seller= (Seller) session.getAttribute("seller");
-        List<Goods> goods=iGoodsService.selectBySellerId(seller.getId());
+    public String StoreGoodsList(HttpSession session,ModelMap modelMap,Integer id){
+        Seller seller=null;
+        List<Goods> goods=null;
+        if(id==null) {
+             seller = (Seller) session.getAttribute("seller");
+            goods=iGoodsService.selectBySellerId(seller.getId());
+        }
+        else {
+            goods = iGoodsService.selectBySellerId(id);
+        }
         modelMap.addAttribute("goods",goods);
-        return  "goodslist";
+        return  "goodslist_seller";
     }
-
-
+    }
 
 
 //        这里是想添加一个商品，但商品的ID应不同
@@ -82,4 +98,3 @@ public class SearchController {
 
 
 
-}

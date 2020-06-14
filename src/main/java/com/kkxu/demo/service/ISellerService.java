@@ -12,4 +12,6 @@ public interface ISellerService {
     List<Goods> selectbysellerid(Integer sellerid);
 
     List<Seller> selectbystorename(String storename);
+
+    Seller selectsellerbysellerid(Integer id);
 }

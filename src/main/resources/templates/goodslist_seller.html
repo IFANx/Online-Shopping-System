@@ -9,7 +9,7 @@
     <thead>
     <tr>
 <!--        <th>卖家ID</th>-->
-<!--        <th>卖家名称</th>-->
+<!--        <th>商品ID</th>-->
         <th>名称</th>
 <!--        <th>信息</th>-->
         <th>价格</th>
@@ -21,9 +21,10 @@
     <tbody>
     <tr th:each="s:${goods}">
 <!--        <td th:text="${s.getSellerId()}"></td>-->
-<!--        <td th:text="${s.getName()}"></td>-->
-        <td th:text="${s.getInfo()}"></td>
-<!--        <td th:text="${s.getPrice()}"></td>-->
+<!--        <td th:text="${s.getId()}"></td>-->
+        <td th:text="${s.getName()}"></td>
+<!--        <td th:text="${s.getInfo()}"></td>-->
+        <td th:text="${s.getPrice()}"></td>
         <td th:text="${s.getSoldCount()}"></td>
         <td th:text="${s.getRestCount()}"></td>
         <td ><form action="/goodsdetail" >
@@ -33,5 +34,9 @@
     </tr>
     </tbody>
 </table>
+<form action="/addgoods">
+    <input type="submit" value="add">
+</form>
+
 </body>
 </html>
