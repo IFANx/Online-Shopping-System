@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkxu.demo.mapper.Shopping_cartAMapper">
+    <select id="selectMe" parameterType="com.kkxu.demo.common.domain.Shopping_cartAKey" resultMap="MyMap">
+    select name,info,price,shopping_cart.sold_count sold_count from shopping_cart,goods where buyer_id=#{id} and goods_id=id;
+    </select>
+    <resultMap id="MyMap" type="com.kkxu.demo.common.domain.Shopping_cartAKey">
+        <id column="sold_count" jdbcType="INTEGER" property="soldCount" />
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="info" jdbcType="VARCHAR" property="info"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+    </resultMap>
+
+    <select id="selectMe1" parameterType="com.kkxu.demo.common.domain.Shopping_cartAKey" resultMap="MyMap">
+    select name,info,price,shopping_cart2.sold_count sold_count from shopping_cart2,goods where shopping_cart2.seller_id=#{id} and goods_id=id;
+    </select>
+
+</mapper>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap/dist/css/bootstrap.min.css" th:href="@{bootstrap/dist/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/bootstrap/dist/css/bootstrap-theme.min.css" th:href="@{/bootstrap/dist/css/bootstrap-theme.min.css}"/>
+    <script src="../static/jquery/dist/jquery.js" th:src="@{/jquery/dist/jquery.js}"></script>
+    <script src="../static/bootstrap/dist/js/bootstrap.min.js" th:src="@{/jquery/dist/jquery.js}"></script>
+
+    <script src="../static/bootstrap-table/bootstrap-table.js"
+            th:src="@{/bootstrap-table/bootstrap-table.js}"></script>
+    <script src="../static/bootstrap-table/locale/bootstrap-table-zh-CN.js"
+            th:src="@{/bootstrap-table/locale/bootstrap-table-zh-CN.js}"></script>
+
+
+    <script src="../static/layer/layer.js"
+            th:src="@{/layer/layer.js}"></script>
+    <title>购物车</title>
+</head>
+<style>
+    a.button {
+        -webkit-appearance: button;
+        -moz-appearance: button;
+        -webkit-appearance:button;
+
+        text-decoration: none;
+        color: initial;
+    }
+
+</style>
+<body>
+
+<form action="deletecarts">
+<table >
+    <tr><td>选择</td>
+        <td>商品名</td>
+        <td>信息</td>
+        <td>单价</td>
+        <td>数量</td>
+        <td>价格</td>
+        <td>操作</td>
+    </tr>
+    <tr th:each="c, State : ${clist}">
+        <td><input type="checkbox" name="goodsIds" th:value="${c.getGoodsId()}"></td>
+        <td th:text="${c.name}"></td>
+        <td th:text="${c.info}"></td>
+        <td th:text="${c.price}"></td>
+        <td th:text="${c.soldCount}"></td>
+        <td th:text="${c.price}*${c.soldCount}"></td>
+        <td><a th:href="@{http://127.0.0.1:8989/deletecarts(goodsIds=${c.getGoodsId()})}" class="button">删除</a></td>
+    </tr>
+    <input type="submit" value="批量删除">
+</table>
+</form>
+<a href="http://127.0.0.1:8989/addToSC?goodsId=1&sold_count=1">加入购物车</a>
+
+<form action="/addToSC">
+    <input value="1" name="goodsId" type="hidden">
+    <input value="1" name="sold_count" type="hidden">
+    <input type="submit" value="add">
+</form>
+
+<form action="/goodslist">
+    <input type="submit" value="查看所有商品">
+</form>
+
+
+</body>
+</html>

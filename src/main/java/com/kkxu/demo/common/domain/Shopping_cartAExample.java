@@ -3,14 +3,14 @@ package com.kkxu.demo.common.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shopping_cartExample {
+public class Shopping_cartAExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public Shopping_cartExample() {
+    public Shopping_cartAExample() {
         oredCriteria = new ArrayList<>();
     }
 

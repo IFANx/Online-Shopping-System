@@ -104,8 +104,9 @@ public class UserController {
                 session.setAttribute("storename",seller.getStoreName());
                 session.setAttribute("storeinfo",seller.getStoreInfo());
             }
-
+            session.setAttribute("isseller",login.getIsseller());
             modelMap.put("login", login);
+            session.setAttribute("login",login);
             if(buyer!=null) {
                 modelMap.put("buyer", buyer);
             }
@@ -113,7 +114,7 @@ public class UserController {
                 modelMap.put("seller", seller);
             }
             return "userdetails";
-
+//          return "ok";
         } else
             modelMap.put("false1", "密码错误,登录失败");
         return "false.html";

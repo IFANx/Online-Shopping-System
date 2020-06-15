@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kkxu.demo.mapper.Shopping_cartMapper">
-  <resultMap id="BaseResultMap" type="com.kkxu.demo.common.domain.Shopping_cartKey">
-    <id column="buyer_id" jdbcType="INTEGER" property="buyerId" />
+<mapper namespace="com.kkxu.demo.mapper.Shopping_cartBMapper">
+  <resultMap id="BaseResultMap" type="com.kkxu.demo.common.domain.Shopping_cartBKey">
+    <id column="seller_id" jdbcType="INTEGER" property="sellerId" />
     <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
     <id column="sold_count" jdbcType="INTEGER" property="soldCount" />
   </resultMap>
@@ -65,15 +65,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    buyer_id, goods_id, sold_count
+    seller_id, goods_id, sold_count
   </sql>
-  <select id="selectByExample" parameterType="com.kkxu.demo.common.domain.Shopping_cartExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kkxu.demo.common.domain.Shopping_cartBExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from shopping_cart
+    from shopping_cart2
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -81,29 +81,29 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.kkxu.demo.common.domain.Shopping_cartKey">
-    delete from shopping_cart
-    where buyer_id = #{buyerId,jdbcType=INTEGER}
+  <delete id="deleteByPrimaryKey" parameterType="com.kkxu.demo.common.domain.Shopping_cartBKey">
+    delete from shopping_cart2
+    where seller_id = #{sellerId,jdbcType=INTEGER}
       and goods_id = #{goodsId,jdbcType=INTEGER}
       and sold_count = #{soldCount,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.kkxu.demo.common.domain.Shopping_cartExample">
-    delete from shopping_cart
+  <delete id="deleteByExample" parameterType="com.kkxu.demo.common.domain.Shopping_cartBExample">
+    delete from shopping_cart2
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kkxu.demo.common.domain.Shopping_cartKey">
-    insert into shopping_cart (buyer_id, goods_id, sold_count
+  <insert id="insert" parameterType="com.kkxu.demo.common.domain.Shopping_cartBKey">
+    insert into shopping_cart2 (seller_id, goods_id, sold_count
       )
-    values (#{buyerId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{soldCount,jdbcType=INTEGER}
+    values (#{sellerId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{soldCount,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.kkxu.demo.common.domain.Shopping_cartKey">
-    insert into shopping_cart
+  <insert id="insertSelective" parameterType="com.kkxu.demo.common.domain.Shopping_cartBKey">
+    insert into shopping_cart2
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="buyerId != null">
-        buyer_id,
+      <if test="sellerId != null">
+        seller_id,
       </if>
       <if test="goodsId != null">
         goods_id,
@@ -113,8 +113,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="buyerId != null">
-        #{buyerId,jdbcType=INTEGER},
+      <if test="sellerId != null">
+        #{sellerId,jdbcType=INTEGER},
       </if>
       <if test="goodsId != null">
         #{goodsId,jdbcType=INTEGER},
@@ -124,17 +124,17 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kkxu.demo.common.domain.Shopping_cartExample" resultType="java.lang.Long">
-    select count(*) from shopping_cart
+  <select id="countByExample" parameterType="com.kkxu.demo.common.domain.Shopping_cartBExample" resultType="java.lang.Long">
+    select count(*) from shopping_cart2
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update shopping_cart
+    update shopping_cart2
     <set>
-      <if test="record.buyerId != null">
-        buyer_id = #{record.buyerId,jdbcType=INTEGER},
+      <if test="record.sellerId != null">
+        seller_id = #{record.sellerId,jdbcType=INTEGER},
       </if>
       <if test="record.goodsId != null">
         goods_id = #{record.goodsId,jdbcType=INTEGER},
@@ -148,8 +148,8 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update shopping_cart
-    set buyer_id = #{record.buyerId,jdbcType=INTEGER},
+    update shopping_cart2
+    set seller_id = #{record.sellerId,jdbcType=INTEGER},
       goods_id = #{record.goodsId,jdbcType=INTEGER},
       sold_count = #{record.soldCount,jdbcType=INTEGER}
     <if test="_parameter != null">

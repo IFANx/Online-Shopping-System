@@ -1,6 +1,8 @@
 package com.kkxu.demo.common.domain;
 
-public class Shopping_cartKey {
+import com.kkxu.demo.common.domain.Extend.Shopping_CartAExtend;
+
+public class Shopping_cartAKey extends Shopping_CartAExtend {
     private Integer buyerId;
 
     private Integer goodsId;

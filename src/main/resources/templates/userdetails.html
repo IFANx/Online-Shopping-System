@@ -5,6 +5,18 @@
     <title>Title</title>
 </head>
 <body>
+
+<form action="/logout">
+    <input type="submit" value="注销">
+</form>
+<form action="/goodslist">
+    <input type="submit" value="查看所有商品">
+</form>
+
+
+
+
+
 <h1>login详细数据</h1>
 用户自定义ID:[[${login.AccountId}]]<br>
 password:[[${login.Password}]]<br>
@@ -39,6 +51,9 @@ password:[[${login.Password}]]<br>
 <!--/*@thymesVar id="seller" type="ch"*/-->
 <span th:if="${seller} != null">
     <p>seller</p>
+    <form action="/store_goodslist">
+    <input type="submit" value="查看本商铺所有商品">
+    </form>
     系统分配ID：[[${seller.id}]]<br>
     用户自定义ID：[[${seller.accountId}]]<br>
     名称：[[${seller.sellerName}]]<br>
@@ -60,9 +75,7 @@ password:[[${login.Password}]]<br>
     <input type="submit" value="更新">
 </form>
 
-    <form action="/logout">
-        <input type="submit" value="注销">
-    </form>
+
 </span>
 
 

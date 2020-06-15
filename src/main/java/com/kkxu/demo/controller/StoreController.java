@@ -1,7 +1,6 @@
 package com.kkxu.demo.controller;
 
 import com.kkxu.demo.common.domain.Goods;
-import com.kkxu.demo.common.domain.GoodsExample;
 import com.kkxu.demo.common.domain.Seller;
 import com.kkxu.demo.service.IGoodsService;
 import com.kkxu.demo.service.ISellerService;
@@ -22,9 +21,9 @@ public class StoreController {
 
 
     //1.卖家添加商品，商品中的sellerid应该由登陆的seller提供，用session保存。
-    //参数列表{name=?? &info=?? &price=?? &soldcount=?? &restcount=??}
+    //参数列表{name=?? &info=?? &price=?? &sold_count=?? &rest_count=??}
     @RequestMapping("/sellerinsertgoods")
-    public String SellerInserGoods(HttpSession session, String name, String info, Double price, Integer soldcount, Integer restcount) {
+    public String SellerInserGoods(HttpSession session, String name, String info, Double price, Integer sold_count, Integer rest_count) {
         Seller seller = (Seller) session.getAttribute("seller");
         Integer MaxID = iGoodsService.selectGoodsMaxID();
         Goods goods = new Goods();
@@ -33,8 +32,8 @@ public class StoreController {
         goods.setPrice(price);
         goods.setName(name);
         goods.setInfo(info);
-        goods.setSoldCount(soldcount);
-        goods.setRestCount(restcount);
+        goods.setSoldCount(sold_count);
+        goods.setRestCount(rest_count);
         iGoodsService.insert(goods);
         return "goodslist";
     }
@@ -76,7 +75,7 @@ public class StoreController {
     //方便跳转
     @RequestMapping("/addgoods")
     public String tiaozhuan1() {
-        return "selleraddgoods.html";
+        return "insertOrupdategoods";
     }
 
 

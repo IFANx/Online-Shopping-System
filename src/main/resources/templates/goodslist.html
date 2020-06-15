@@ -20,10 +20,7 @@
     </thead>
     <tbody>
     <tr th:each="s:${goods}">
-<!--        <td th:text="${s.getSellerId()}"></td>-->
-<!--        <td th:text="${s.getName()}"></td>-->
         <td th:text="${s.getInfo()}"></td>
-<!--        <td th:text="${s.getPrice()}"></td>-->
         <td th:text="${s.getSoldCount()}"></td>
         <td th:text="${s.getRestCount()}"></td>
         <td ><form action="/goodsdetail" >
