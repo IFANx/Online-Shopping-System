@@ -24,20 +24,21 @@
         <td th:text="${goods.getSellerId()}"></td>
         <td th:text="${seller.getSellerName()}"></td>
         <td th:text="${seller.getStoreName()}"></td>
+        <td th:text="${goods.getName()}"></td>
         <td th:text="${goods.getInfo()}"></td>
         <td th:text="${goods.getPrice()}"></td>
         <td th:text="${goods.getSoldCount()}"></td>
         <td th:text="${goods.getRestCount()}"></td>
-                <td ><form action="/sellerupdategoods" >
+                <td ><form action="/tosellerupdategoods" >
                     <input th:value="${seller.getId()}" name="sellerid" type="hidden">
                     <input th:value="${goods.getId()}" name="goodsid" type="hidden">
-                    <input type="submit" value="更新">
+                    <input type="submit" value="更新此商品">
                 </form></td>
 
         <td>
             <form action="/sellerdeletegoods">
                 <input th:value="${goods.getId()}" name="goodsid" type="hidden">
-                <input type="submit" value="移除">
+                <input type="submit" value="下架此商品">
             </form>
         </td>
 

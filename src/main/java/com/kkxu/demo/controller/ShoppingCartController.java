@@ -34,10 +34,7 @@ public class ShoppingCartController {
     public String deletecarts(HttpSession session, ModelMap modelMap, HttpServletRequest request){
         String[] strs = request.getParameterValues("goodsIds");
         int[] num= Tools.strArrayToIntArray(strs);
-
-
         shoppingCartService.deletecarts((String)session.getAttribute("account_id"),num);
-
         List<Shopping_cartAKey> list=shoppingCartService.SClist((String) session.getAttribute("account_id"));
         modelMap.addAttribute("clist",list);
         return "cart-list";

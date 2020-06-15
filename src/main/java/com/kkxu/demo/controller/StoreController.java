@@ -5,6 +5,7 @@ import com.kkxu.demo.common.domain.Seller;
 import com.kkxu.demo.service.IGoodsService;
 import com.kkxu.demo.service.ISellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
+@Controller
 public class StoreController {
     @Autowired
     private IGoodsService iGoodsService;
@@ -35,7 +37,7 @@ public class StoreController {
         goods.setSoldCount(sold_count);
         goods.setRestCount(rest_count);
         iGoodsService.insert(goods);
-        return "goodslist";
+        return "button";
     }
 
     //2.Goods信息更新,商家对自己店铺的商品进行修改
@@ -43,41 +45,23 @@ public class StoreController {
     //其实商品的ID不允许修改，应该由点击某一个商品，该商品自然会将这个商品的ID传递到session中。
     //参数列表{name=?? &price=?? &info=?? &soldcount=?? &restcount=??}
     @RequestMapping("/sellerupdategoods")
-    @ResponseBody
-    public String SellerUpdateGoods(HttpSession session, String name, Double price, String info, Integer soldcount, Integer restcount) {
+    public String SellerUpdateGoods(Integer goodsid, String name, Double price, String info,Integer rest_count) {
         //暂时没有合适的，我们设置一个session
-        session.setAttribute("good", (Integer) 13);
         Goods goods = new Goods();
         goods.setName(name);
         goods.setPrice(price);
         goods.setInfo(info);
-        goods.setSoldCount(soldcount);
-        goods.setRestCount(restcount);
-        iGoodsService.goodsupdate(13, goods);
-        return "success";
+        goods.setRestCount(rest_count);
+        iGoodsService.goodsupdate(goodsid, goods);
+        return "button";
     }
 
     //3.根据id或者name删除goods数据
     @RequestMapping("/sellerdeletegoods")
-    @ResponseBody
-    public String DeleteGoodsByIdOrName(Integer goodsid) {
-        if (goodsid != null) {
-            iGoodsService.deleteById(goodsid);
-        }
-//        } else if (name != null) {
-//            iGoodsService.deleteByName(name);
-//        }
-        return "移除成功";
+    public String SellerDeleteGoods(Integer goodsid) {
+        iGoodsService.deleteById(goodsid);
+        return "button";
     }
-
-
-    //    ====================================
-    //方便跳转
-    @RequestMapping("/addgoods")
-    public String tiaozhuan1() {
-        return "insertOrupdategoods";
-    }
-
 
 
     @RequestMapping("/detail")

@@ -6,12 +6,7 @@
 </head>
 <body>
 
-<form action="/logout">
-    <input type="submit" value="注销">
-</form>
-<form action="/goodslist">
-    <input type="submit" value="查看所有商品">
-</form>
+
 
 
 
@@ -28,7 +23,7 @@ password:[[${login.Password}]]<br>
 ============
 <!--/*@thymesVar id="buyer" type="ch"*/-->
 <span th:if="${buyer} != null">
-    <p>buyer</p>
+    <p>当前用户为buyer</p>
     系统分配ID:[[${buyer.id}]]<br>
     用户自定义ID：[[${buyer.accountId}]]<br>
     名称：[[${buyer.name}]]<br>
@@ -36,24 +31,14 @@ password:[[${login.Password}]]<br>
     性别(0/1)：[[${buyer.sex}]]<br>
     邮箱：[[${buyer.email}]]<br>
     个人签名：[[${buyer.personalsign}]]
-
-    <p>请输入更新的数据</p>
-<form action="/updateBuyer">
-    名称：<input type="text" name="name"><br>
-    密码：<input type="text" name="password">
-    性别：<input type="text" name="sex"><br>
-    邮箱：<input type="text" name="email"><br>
-    个性签名：<input type="text" name="personalsign"><br>
-    <input type="submit" value="更新">
-</form>
+    <form action="/toupdatebuyer">
+        <input type="submit" value="修改个人信息">
+    </form>
 </span>
 
 <!--/*@thymesVar id="seller" type="ch"*/-->
 <span th:if="${seller} != null">
-    <p>seller</p>
-    <form action="/store_goodslist">
-    <input type="submit" value="查看本商铺所有商品">
-    </form>
+    <p>当前用户为seller</p>
     系统分配ID：[[${seller.id}]]<br>
     用户自定义ID：[[${seller.accountId}]]<br>
     名称：[[${seller.sellerName}]]<br>
@@ -62,20 +47,15 @@ password:[[${login.Password}]]<br>
     邮箱：[[${seller.email}]]<br>
     店铺名称：[[${seller.storeName}]]<br>
     店铺信息：[[${seller.storeInfo}]]
-
-
-        <p>请输入更新的数据</p>
-<form action="/updateSeller">
-    名称：<input type="text" name="sellername"><br>
-    密码：<input type="text" name="password">
-    性别：<input type="text" name="sex"><br>
-    邮箱：<input type="text" name="email"><br>
-    店铺名称：<input type="text" name="storename"><br>
-    店铺信息：<input type="text" name="storeinfo"><br>
-    <input type="submit" value="更新">
-</form>
-
-
+    <form action="/toupdateseller">
+        <input type="submit" value="修改商家信息">
+    </form>
+    <form action="/store_goodslist">
+        <input type="submit" value="查看商家所有商品">
+    </form>
+     <form action="/tobutton">
+        <input type="submit" value="前往搜索栏">
+    </form>
 </span>
 
 

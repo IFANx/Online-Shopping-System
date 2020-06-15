@@ -11,7 +11,7 @@ public interface IGoodsService {
 
     List<Goods> goodsSearch(String keyword);
 
-    List<Goods> goodsSearchByName_Price(String name, Double price);
+    List<Goods> goodsSearchByName_Price(String name, Double lowerprice, Double higherprice);
 
     Integer goodsupdate(Integer id, Goods goods);
 

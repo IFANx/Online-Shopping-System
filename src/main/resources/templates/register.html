@@ -5,10 +5,15 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/User/register">
-<input type="text" name="uname" value="name">
-<input type="password" name="upassword" value="pwd">
+<form action="/register">
+<input type="text" name="account_id" value="name">
+<input type="text" name="email" value="@scu">
+<input type="password" name="password" value="pwd">
+<input type="password" name="pwd" value="pwd">
+<input type="number" name="isseller" value="0">
+
 <input type="submit" id="btn" value="注册">
+    [[${RegisterFailMsg}]]
 </form>
 </body>
 </html>

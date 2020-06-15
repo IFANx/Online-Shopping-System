@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/logout">
+    <input type="submit" value="注销">
+</form>
+<br>
+<form action="/goodslist">
+    <input type="submit" value="查看所有商品">
+</form>
+<br>
+<form action="/searchgoodsbyname">
+     <input type="text" name="name" value="输入检索商品名称">
+    <input type="submit" value="检索">
+    [[${searcherror1}]]
+</form>
+<br>
+<form action="/searchgoodsbyname_price">
+    <input type="text" name="name" value="输入检索商品名称">
+    <input type="number" name="lowerprice" value="价格下限">
+    <input type="number" name="higherprice" value="价格上限">
+    <input type="submit" value="检索">
+          [[${error}]]
+</form>
+<br>
+<form action="/searchstorebyname">
+    <input type="text" name="storename" value="输入检索商铺名称">
+    <input type="submit" value="检索">
+    [[${searcherror2}]]
+</form>
+<br>
+
+</form>
+</body>
+</html>

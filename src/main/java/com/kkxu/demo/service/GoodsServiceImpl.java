@@ -36,9 +36,9 @@ public class GoodsServiceImpl implements IGoodsService {
     }
 
     @Override
-    public List<Goods> goodsSearchByName_Price(String name, Double price) {
+    public List<Goods> goodsSearchByName_Price(String name, Double lowerprice, Double higherprice) {
         GoodsExample goodsExample=new GoodsExample();
-        goodsExample.createCriteria().andNameLike("%"+name+"%").andPriceLessThanOrEqualTo(price);
+        goodsExample.createCriteria().andNameLike("%"+name+"%").andPriceBetween(lowerprice,higherprice);
         List<Goods> goods = goodsMapper.selectByExample(goodsExample);
         return goods;
     }

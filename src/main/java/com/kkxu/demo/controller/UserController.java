@@ -18,54 +18,62 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
 
-    //1.login表注册 需要参数  参数列表{account_id=?? &password=?? &pwd=?? &isseller=?}
+    //1.login表注册 需要参数  参数列表{account_id=?? &email=??&password=?? &pwd=?? &isseller=?}
     @RequestMapping("/register")
-    @ResponseBody
-    public String Register(String account_id, String password, String pwd, Integer isseller) {
-        Login login = iUserService.selectloginById(account_id);
-        Login loginnew = new Login();
-        Buyer buyer = new Buyer();
-        Seller seller = new Seller();
-        Integer MaxID = iUserService.selectLoginMaxID();
-        if (login != null) {
-            return "此账号已存在，请换一个名称";
-        } else if (password.equals(pwd)) {
+    public String Register(ModelMap modelMap,String account_id, String email,String password, String pwd, Integer isseller) {
+        if(account_id.isEmpty()||email.isEmpty()||password.isEmpty()||pwd.isEmpty()||isseller.equals(null))
+        {
+            modelMap.addAttribute("RegisterFailMsg","任何输入的数据均不能为空，请重新填写");
+            return "register";
+        }
+        else {
+            Login login = iUserService.selectloginById(account_id);
+            Login loginnew = new Login();
+            Buyer buyer = new Buyer();
+            Seller seller = new Seller();
+            Integer MaxID = iUserService.selectLoginMaxID();
+            if (login != null) {
+                modelMap.addAttribute("RegisterFailMsg","此账号已存在，请换一个名称");
+                return "register";
+            } else if (password.equals(pwd)) {
 
-            //向login表中添加此人信息
-            loginnew.setAccountId(account_id);//accountid更像是自己的游戏昵称，自定义，但唯一
-            loginnew.setPassword(password);
-            loginnew.setIsseller(isseller);//赋初值为0，代表注册的用户开始都只是buyer
-            loginnew.setId(MaxID + 1);//ID不允许修改，系统赋予的一个类似于唯一标识
-            if (isseller == 1) {
-                loginnew.setSellerId(MaxID + 1);
-            }
-            iUserService.insertintologin(loginnew);
+                //向login表中添加此人信息
+                loginnew.setAccountId(account_id);//accountid更像是自己的游戏昵称，自定义，但唯一
+                loginnew.setPassword(password);
+                loginnew.setIsseller(isseller);//赋初值为0，代表注册的用户开始都只是buyer
+                loginnew.setId(MaxID + 1);//ID不允许修改，系统赋予的一个类似于唯一标识
+                if (isseller == 1) {
+                    loginnew.setSellerId(MaxID + 1);
+                }
+                iUserService.insertintologin(loginnew);
 
-            //根据传入的isseller判断该login是否为seller
-            //向buyer表中添加此人信息,因为卖家也可以买东西，所以任何login都会在buyer中注册，但不一定会在sellser中注册
-            buyer.setId(MaxID + 1);
-            buyer.setAccountId(account_id);
-            buyer.setSex(false);//因为下面三项sex，name，email均设置不为空，所以我们暂时统一初值，可在个人页面修改
-            buyer.setName("buyername");
-            buyer.setEmail("buyer@scu");
-            buyer.setPersonalsign("personalsign");
-            iUserService.insertintobuyer(buyer);
+                //根据传入的isseller判断该login是否为seller
+                //向buyer表中添加此人信息,因为卖家也可以买东西，所以任何login都会在buyer中注册，但不一定会在sellser中注册
+                buyer.setId(MaxID + 1);
+                buyer.setAccountId(account_id);
+                buyer.setSex(false);//因为下面三项sex，name，email均设置不为空，所以我们暂时统一初值，可在个人页面修改
+                buyer.setName("buyername");
+                buyer.setEmail(email);
+                buyer.setPersonalsign("personalsign");
+                iUserService.insertintobuyer(buyer);
 
 
 //            向seller表中添加此人信息
-            if (isseller == 1) {
-                seller.setId(MaxID+1);
-                seller.setAccountId(account_id);
-                seller.setSex(true);//因为下面三项sex，name，email均设置不为空，所以我们暂时统一初值，可在个人页面修改
-                seller.setStoreName("storename");
-                seller.setEmail("seller@scu");
-                seller.setStoreInfo("storeinfo");
-                seller.setSellerName("sellername");
-                iUserService.insertintoseller(seller);
+                if (isseller == 1) {
+                    seller.setId(MaxID + 1);
+                    seller.setAccountId(account_id);
+                    seller.setSex(true);//因为下面三项sex，name，email均设置不为空，所以我们暂时统一初值，可在个人页面修改
+                    seller.setStoreName("storename");
+                    seller.setEmail(email);
+                    seller.setStoreInfo("storeinfo");
+                    seller.setSellerName("sellername");
+                    iUserService.insertintoseller(seller);
+                }
+                return "login";
+            } else {
+                modelMap.addAttribute("RegisterFailMsg","两次输入的密码不一致，请修改");
+                return "register";
             }
-            return "Register Success";
-        } else {
-            return "两次输入的密码不一致，请修改";
         }
     }
 
@@ -73,58 +81,61 @@ public class UserController {
     //2.login登录,需要参数  参数列表{account=?? &pwd=??}
     @RequestMapping("/login")
     public String Login(String account, String pwd, HttpSession session, ModelMap modelMap) {
-        Login login = iUserService.selectloginById(account);
-        if (login == null) {
-            modelMap.put("false1", "账号不存在，失败");
-            return "false.html";
-        } else if (login!=null && pwd.equals(login.getPassword())) {
-            session.setAttribute("account_id", account);
-            modelMap.put("success", "登陆成功");
-            //查询到此用户是buyer
-           Buyer buyer = null;
-           Seller seller=null;
-            if (login.getIsseller() == 0) {
-                buyer = iUserService.selectbuyerById(account).get(0);
-                //将buyer相关的信息存入session，我们可以在其他页面调用
-                session.setAttribute("buyer",buyer);
-                session.setAttribute("name",buyer.getName());
-                session.setAttribute("email",buyer.getEmail());
-                session.setAttribute("sex",buyer.getSex());
-                session.setAttribute("id",buyer.getId());
-                session.setAttribute("bpersonalsign",buyer.getPersonalsign());
-            }
-            else{
-                //将seller相关的信息存入session，我们可以在其他页面调用
-                seller =iUserService.selectsellerById(account).get(0);
-                session.setAttribute("seller",seller);
-                session.setAttribute("name",seller.getSellerName());
-                session.setAttribute("email",seller.getEmail());
-                session.setAttribute("sex",seller.getSex());
-                session.setAttribute("id",seller.getId());
-                session.setAttribute("storename",seller.getStoreName());
-                session.setAttribute("storeinfo",seller.getStoreInfo());
-            }
-            session.setAttribute("isseller",login.getIsseller());
-            modelMap.put("login", login);
-            session.setAttribute("login",login);
-            if(buyer!=null) {
-                modelMap.put("buyer", buyer);
-            }
-            if(seller!=null) {
-                modelMap.put("seller", seller);
-            }
-            return "userdetails";
-//          return "ok";
-        } else
-            modelMap.put("false1", "密码错误,登录失败");
-        return "false.html";
+        if(account.isEmpty()||pwd.isEmpty()){
+            modelMap.addAttribute("LoginFailMsg","任何输入不能为空，请重新填写！");
+            return "login";
+        }
+        else {
+            Login login = iUserService.selectloginById(account);
+            if (login == null) {
+                modelMap.put("LoginFailMsg", "账号不存在，登录失败");
+                return "login";
+            } else if (login != null && pwd.equals(login.getPassword())) {
+                session.setAttribute("account_id", account);
+                modelMap.put("success", "登陆成功");
+                session.setAttribute("login",login);
+                //查询到此用户是buyer
+                Buyer buyer = null;
+                Seller seller = null;
+                if (login.getIsseller() == 0) {
+                    buyer = iUserService.selectbuyerById(account).get(0);
+                    //将buyer相关的信息存入session，我们可以在其他页面调用
+                    session.setAttribute("buyer", buyer);
+                    session.setAttribute("name", buyer.getName());
+                    session.setAttribute("email", buyer.getEmail());
+                    session.setAttribute("sex", buyer.getSex());
+                    session.setAttribute("id", buyer.getId());
+                    session.setAttribute("bpersonalsign", buyer.getPersonalsign());
+                } else {
+                    //将seller相关的信息存入session，我们可以在其他页面调用
+                    seller = iUserService.selectsellerById(account).get(0);
+                    session.setAttribute("seller", seller);
+                    session.setAttribute("name", seller.getSellerName());
+                    session.setAttribute("email", seller.getEmail());
+                    session.setAttribute("sex", seller.getSex());
+                    session.setAttribute("id", seller.getId());
+                    session.setAttribute("storename", seller.getStoreName());
+                    session.setAttribute("storeinfo", seller.getStoreInfo());
+                }
+                session.setAttribute("isseller", login.getIsseller());
+                modelMap.put("login", login);
+                if (buyer != null) {
+                    modelMap.put("buyer", buyer);
+                }
+                if (seller != null) {
+                    modelMap.put("seller", seller);
+                }
+                return "userdetails";
+            } else
+                modelMap.put("LoginFailMsg", "密码错误,登录失败");
+            return "login";
+        }
     }
 
     //3.User信息更新,包括更新login表和相应的buyer表，根据account_id修改其他信息，
     // account_id,id，sellerid应不允许改变
     //参数列表{name=?? &password=?? &sex=? &email=?? &personalsign=??}
     @RequestMapping("/updateBuyer")
-    @ResponseBody
     public String UpdateBuyer(HttpSession session, String name,String password,Boolean sex,String email,String personalsign) {
         Login login = new Login();
         Buyer buyer=new Buyer();
@@ -135,14 +146,13 @@ public class UserController {
         iUserService.UpdateLogin((String) session.getAttribute("account_id"), login);
         //相应对Buyer表进行修改
         iUserService.UpdateBuyer((String)session.getAttribute("account_id"),buyer);
-        return "userdetails";
+        return "button";
     }
 
     //4.User信息更新,包括更新login表和相应的seller表，根据account_id修改其他信息，
     // account_id,id，sellerid应不允许改变
     //参数列表{sellername=?? &password=?? &sex=?? &email=?? &storename=?? &storeinfo=??}
     @RequestMapping("/updateSeller")
-    @ResponseBody
     public String UpdateSeller(HttpSession session, String sellername,String password,boolean sex,String email,String storename,String storeinfo) {
         Login login = new Login();
         Seller seller=new Seller();
@@ -151,7 +161,7 @@ public class UserController {
         seller.setSellerName(sellername);seller.setSex(sex);seller.setEmail(email);seller.setStoreName(storename);seller.setStoreInfo(storeinfo);
         iUserService.UpdateLogin((String) session.getAttribute("account_id"), login);
         iUserService.UpdateSeller((String)session.getAttribute("account_id"),seller);
-        return "userdetails";
+        return "button";
     }
 
     //5.显示已注册login账号列表 --意义不大，因为没有管理员  参数列表  ?id1=4&id2=20

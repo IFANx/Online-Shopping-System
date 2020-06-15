@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/sellerupdategoods">
+    商品名称：<input type="text" name="name" value="名称">
+    商品信息：<input type="text" name="info" value="基本信息">
+    商品价格：<input type="number" name="price" value="价格">
+    商品库存：<input type="number" name="rest_count" value="库存">
+            <input th:value="${goodsid}"  name="goodsid"  type="hidden">
+    <input type="submit" value="更新商品">
+</form>
+
+
+</body>
+</html>
