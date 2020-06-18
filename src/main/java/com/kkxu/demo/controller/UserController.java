@@ -21,7 +21,7 @@ public class UserController {
     //1.login表注册 需要参数  参数列表{account_id=?? &email=??&password=?? &pwd=?? &isseller=?}
     @RequestMapping("/register")
     public String Register(ModelMap modelMap,String account_id, String email,String password, String pwd, Integer isseller) {
-        if(account_id.isEmpty()||email.isEmpty()||password.isEmpty()||pwd.isEmpty()||isseller.equals(null))
+        if(account_id.isEmpty()||email.isEmpty()||password.isEmpty()||pwd.isEmpty()||isseller==2)
         {
             modelMap.addAttribute("RegisterFailMsg","任何输入的数据均不能为空，请重新填写");
             return "register";

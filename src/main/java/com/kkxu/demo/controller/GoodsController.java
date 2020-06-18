@@ -34,8 +34,8 @@ public class GoodsController {
         Seller seller = iSellerService.selectsellerbysellerid(id);
         modelMap.addAttribute("goods", goods);
         modelMap.addAttribute("seller", seller);
-        if (session == null) { return "goodsdetail"; }
-         else if (session != null) {
+        if (session.getAttribute("login") == null) { return "goodsdetail"; }
+         else if (session.getAttribute("login") != null) {
             Login login = (Login) session.getAttribute("login");
             if (login.getIsseller() == 0) { return "goodsdetail";}
         } else
